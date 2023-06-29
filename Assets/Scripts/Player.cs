@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             playerRb.velocity = Vector2.zero; // también es posible playerRb.velocity = new Vector2(0, 0);
             playerRb.AddForce(new Vector2(0, verticalForce));
@@ -61,6 +61,14 @@ public class Player : MonoBehaviour
             return;
         }
 
+        if (collision.gameObject.CompareTag("FinishLine"))
+        {
+            gameObject.SetActive(false);
+            Instantiate(playerParticles, transform.position, Quaternion.identity);
+            Invoke("LoadNextScene", restartDelay);
+            return;
+        }
+
         //Debug.Log(collision.gameObject.tag);
 
         if (!collision.gameObject.CompareTag(currentColor))
@@ -72,9 +80,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    void LoadNextScene()
+    {
+        int activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(activeSceneIndex + 1);
+    }
+
     void RestartScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        int activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(activeSceneIndex);
     }
 
     void ChangeColor()

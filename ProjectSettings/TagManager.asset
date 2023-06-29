@@ -9,6 +9,7 @@ TagManager:
   - Cyan
   - Pink
   - ColorChanger
+  - FinishLine
   layers:
   - Default
   - TransparentFX
